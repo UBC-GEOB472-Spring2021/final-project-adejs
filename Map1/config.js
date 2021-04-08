@@ -35,6 +35,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
             ]
@@ -62,6 +63,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
             ]
