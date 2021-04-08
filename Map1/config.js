@@ -35,9 +35,14 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+<<<<<<< HEAD
                 opacity: 1
+=======
+                opacity: 1,
+>>>>>>> parent of 29c5b8b (Revert "Update opacity")
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -62,10 +67,16 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
+<<<<<<< HEAD
             onChapterEnter: [
                 opacity: 1
+=======
+              onChapterEnter: [
+                opacity: 1,
+>>>>>>> parent of 29c5b8b (Revert "Update opacity")
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -90,10 +101,16 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
+<<<<<<< HEAD
              onChapterEnter: [
                 opacity: 1
+=======
+              onChapterEnter: [
+                opacity: 1,
+>>>>>>> parent of 29c5b8b (Revert "Update opacity")
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -122,6 +139,7 @@ var config = {
                 opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -146,10 +164,16 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
+<<<<<<< HEAD
             onChapterEnter: [
                 opacity: 1
+=======
+             onChapterEnter: [
+                opacity: 1,
+>>>>>>> parent of 29c5b8b (Revert "Update opacity")
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -174,10 +198,16 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
+<<<<<<< HEAD
             onChapterEnter: [
                 opacity: 1
+=======
+              onChapterEnter: [
+                opacity: 1,
+>>>>>>> parent of 29c5b8b (Revert "Update opacity")
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -203,9 +233,14 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+<<<<<<< HEAD
                 opacity: 1
+=======
+                opacity: 1,
+>>>>>>> parent of 29c5b8b (Revert "Update opacity")
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -230,10 +265,16 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
+<<<<<<< HEAD
             onChapterEnter: [
                 opacity: 1
+=======
+             onChapterEnter: [
+                opacity: 1,
+>>>>>>> parent of 29c5b8b (Revert "Update opacity")
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -258,10 +299,16 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
+<<<<<<< HEAD
             onChapterEnter: [
                 opacity: 1
+=======
+              onChapterEnter: [
+                opacity: 1,
+>>>>>>> parent of 29c5b8b (Revert "Update opacity")
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -286,10 +333,16 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
+<<<<<<< HEAD
             onChapterEnter: [
                 opacity: 1
+=======
+              onChapterEnter: [
+                opacity: 1,
+>>>>>>> parent of 29c5b8b (Revert "Update opacity")
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
