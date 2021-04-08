@@ -35,8 +35,10 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -61,9 +63,11 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [
+              onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -88,9 +92,11 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [
+              onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -115,9 +121,11 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [
+             onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -142,9 +150,11 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [
+             onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -169,9 +179,11 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [
+              onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -197,8 +209,10 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -223,9 +237,11 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [
+             onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -250,9 +266,11 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [
+              onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
@@ -277,9 +295,11 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [
+              onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
+                opacity: .5,
             ]
         },
         {
