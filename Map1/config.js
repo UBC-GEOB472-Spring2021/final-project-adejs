@@ -35,7 +35,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
-                opacity: 1,
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -63,7 +63,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
-                opacity: 1,
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -90,7 +90,8 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [
+             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -117,7 +118,8 @@ var config = {
             mapAnimation: 'flyTo',
             rotateAnimation: false,
             callback: '',
-            onChapterEnter: [
+             onChapterEnter: [
+                opacity: 1,
             ],
             onChapterExit: [
             ]
@@ -145,6 +147,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -172,6 +175,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -199,6 +203,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -226,6 +231,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -253,6 +259,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -280,6 +287,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -307,6 +315,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -334,6 +343,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -361,6 +371,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -388,6 +399,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -415,6 +427,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -442,6 +455,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -469,6 +483,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -496,6 +511,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -523,6 +539,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
@@ -550,6 +567,7 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                opacity: 1
             ],
             onChapterExit: [
             ]
