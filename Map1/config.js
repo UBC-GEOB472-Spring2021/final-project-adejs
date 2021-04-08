@@ -35,7 +35,10 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+<<<<<<< HEAD
                 opacity: 1
+=======
+>>>>>>> parent of 6977e42 (Update config.js)
             ],
             onChapterExit: [
             ]
@@ -63,7 +66,10 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+<<<<<<< HEAD
                 opacity: 1
+=======
+>>>>>>> parent of 6977e42 (Update config.js)
             ],
             onChapterExit: [
             ]
