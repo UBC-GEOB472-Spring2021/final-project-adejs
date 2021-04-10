@@ -35,8 +35,14 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                {
+                    opacity: 1
+                }
             ],
             onChapterExit: [
+                {
+                    opacity: 0
+                }
             ]
         },
         {
@@ -62,8 +68,14 @@ var config = {
             rotateAnimation: false,
             callback: '',
             onChapterEnter: [
+                {
+                    opacity: 1
+                }
             ],
             onChapterExit: [
+                {
+                    opacity: 0
+                }
             ]
         },
         {
