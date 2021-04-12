@@ -261,6 +261,8 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/jasonad123/ckn26lg1e2jfm17rxiip63in2',
     transformRequest: transformRequest
 });
+    
+    map.addControl(new mapboxgl.FullscreenControl());
 
 if (config.showMarkers) {
     var marker = new mapboxgl.Marker({ color: config.markerColor });
@@ -336,7 +338,7 @@ map.on("load", function() {
 // setup resize event
 window.addEventListener('resize', scroller.resize);
 
-map.addControl(new mapboxgl.FullscreenControl());
+
 </script>
 
 </body>
