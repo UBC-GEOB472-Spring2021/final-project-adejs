@@ -11,7 +11,8 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
-
+    
+    <!-- Load Javascript file with data --> 
     <script type="text/javascript" src="density_percentage.js"></script>
     <!-- Load c3.css -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.css" rel="stylesheet">
@@ -20,6 +21,7 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
     <style type="text/css">
+        
         /* Style of the Legend: adjust the values below to change the appearance of the legend pane*/
         .legend {
             padding: 6px 8px;
@@ -63,22 +65,28 @@
     <div id="map" style="width: 80%; height: 600px; margin-left: 250px "></div>
 
     <script type="text/javascript">
-
+        // Used this tutorial https://neiugis.github.io/lab5/ to make the map 
+        
+        // initialize map
         var map = L.map('map', {
             center: [45, -100],
             zoom: 4
         });
+        
+        // Set bounds
         var southWest = L.latLng(71.712, -161.227),
-                northEast = L.latLng(15, -60.125),
+                northEast = L.latLng(15, -40.125),
                 mybounds = L.latLngBounds(southWest, northEast);
-
+        
+        // Use outdoor mapbox style to match storymap
         L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWxpc29uZGVlcmUiLCJhIjoiY2s1ZzRiZ3JsMDQycDNrcW1nMHcxODhkayJ9.HO_b7LH4WrchBsGVMuroIg', {
             attribution: 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.',
             maxZoom: 18,
             minZoom: 4,
             bounds: mybounds,
         }).addTo(map);
-
+        
+        // Define what colours will define the choropleth map
         function getColor(value) {
             return value > 13.00 ? '#a50f15' :
                 value > 8.00 ? '#de2d26' :
@@ -86,26 +94,26 @@
                         value > 2.00 ? '#fcae91' :
                             '#fee5d9';
         }
-        map.on('drag', function() {
+    // Set limits on dragging, do not let user drag outside of bounds 
+    map.on('drag', function() {
     map.panInsideBounds(mybounds, { animate: false });
 });
-
+        // Set up choropleth
         function style(feature) {
             return {
-                fillColor: getColor(feature.properties['density_percentage']),   // pop_den is the field name for the population density data
+                fillColor: getColor(feature.properties['density_percentage']),   // density_percentage is the field name for the population density data
                 weight: 2,
                 opacity: 0.1,
                 color: 'black',
                 fillOpacity: 1
             };
         }
+        // Set up pie charts
         function makeChart(props) {
             // props is just a variable, which will be replaced with the layer's properties 
             // when using the function
             c3.generate({
-
                 bindto: '#chart',  // id of the chart div, as defined earlier
-
                 size: {  // size (height and width) of the chart, by pixels
                     height: 250,
                     width: 175
@@ -148,7 +156,7 @@
                 }
             });
         }
-        
+        // set up highlighting feature
         function highlightFeature(e) {
             var layer = e.target;
 
@@ -187,7 +195,8 @@
             style: style,
             onEachFeature: onEachFeature
         }).addTo(map);
-
+        
+        // Add legend
         var legend = L.control({ position: 'bottomright' }); // Try the other three corners if you like.
 
         legend.onAdd = function (map) {
