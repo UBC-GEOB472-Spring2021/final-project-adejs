@@ -6,7 +6,7 @@ var config = {
     theme: 'light',
     use3dTerrain: false,
     title: 'Late 2018 Migrant Caravan',
-    subtitle: 'In late 2018, a caravan travelled from Central America through Mexico with the goal of escaping harsh conditions in their country and seeking better opportunities. This is their story.',
+    subtitle: '',
     byline: 'UBC GEOB 472 W2020/21',
     footer: 'Data points based on maps from ' + '<a href ="https://cis.org/Migrant-Caravan-Map">CIS</a>' + ' and ' + '<a href="https://www.mercurynews.com/2018/11/14/map-migrant-caravan-tijuana/">Mercury News.</a>' +
     '<p> Descriptions, dates, and caravan sizes attributed to sources linked at points. </p>' +
