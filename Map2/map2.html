@@ -1,636 +1,661 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Latin America to United States Immigration</title>
 
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-        crossorigin=""/>
+<head>
+  <title>Latin, South, and Central America to United States Immigration</title>
 
-        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-        crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin="" />
 
-        <!-- Load animation tweening library requirement for CanvasFlowMapLayer -->
-        <script src="https://unpkg.com/@tweenjs/tween.js@18.5.0/dist/tween.umd.js"></script>
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
 
-        <!-- then load CanvasFlowMapLayer -->
-        <script src="CanvasFlowmapLayer.js"></script>
+  <!-- Load animation tweening library requirement for CanvasFlowMapLayer -->
+  <script src="https://unpkg.com/@tweenjs/tween.js@18.5.0/dist/tween.umd.js"></script>
 
-        <script type="text/javascript" src="LA_US.js"></script>
-        
+  <!-- then load CanvasFlowMapLayer -->
+  <script src="CanvasFlowmapLayer.js"></script>
 
-        <style type="text/css">
-         .legend {
-            padding: 6px 8px;
-            line-height: 18px;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
+  <script type="text/javascript" src="LA_US.js"></script>
+
+
+  <style type="text/css">
+    .legend {
+      padding: 6px 8px;
+      line-height: 18px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+    }
+
+    /* Adjust the values below to change the appearance of the legend color boxes */
+    .legend i {
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.7;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    #map {
+      min-height: 100%;
+    }
+
+    .title {
+      padding: 3px 4px;
+      height: 8x;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+    }
+
+    .title i {
+      width: 15px;
+      height: 10px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.7;
+    }
+  </style>
+
+</head>
+
+<body>
+  <nav id="menu"></nav>
+  <div id="map"></div>
+
+  <script type="text/javascript">
+    // Define colours that will be used as different flows (dependenting on number of migrants)
+
+    var colours = ['#f3cbd3', '#eaa9bd', '#ca699d', '#91357d', '#6c2167']
+
+    // Define year 1990
+    var year_1990 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
+      originAndDestinationFieldIds: {
+        originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
+        originGeometry: { //origin coordinates
+          x: 'Centroids_',
+          y: 'Centroid_1'
+        },
+        destinationUniqueIdField: 'dest', //destination ID
+        destinationGeometry: { //destination coordinates
+          x: 'US_lon',
+          y: 'US_lat'
         }
+      },
 
-        /* Adjust the values below to change the appearance of the legend color boxes */
-        .legend i {
-            width: 18px;
-            height: 18px;
-            float: left;
-            margin-right: 8px;
-            opacity: 0.7;
+      canvasBezierStyle: {
+        //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
+        //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
+        type: 'classBreaks',
+        field: '1990', // The field/value to be used for symbolizing the lines
+
+        // Define the classes and symbols below
+        classBreakInfos: [{
+          classMinValue: 0,  // break values of this class, using field values defined above
+          classMaxValue: 306208,
+          symbol: {  // Define the symbology for this class
+            // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
+            strokeStyle: colours[0],  // flow line color
+            lineWidth: 3,  // flow line width
+            lineCap: 'round',  // shape of the stroke end
+          }
+        }, {  // another class
+          classMinValue: 306209,
+          classMaxValue: 894876,
+          symbol: {
+            strokeStyle: colours[1],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // one more class
+          classMinValue: 894877,
+          classMaxValue: 1830275,
+          symbol: {
+            strokeStyle: colours[2],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 1830276,
+          classMaxValue: 6827945,
+          symbol: {
+            strokeStyle: colours[3],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 6827946,
+          classMaxValue: 12168662,
+          symbol: {
+            strokeStyle: colours[4],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }],
+      },
+    })
+
+    // Define 1995
+    var year_1995 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
+      originAndDestinationFieldIds: {
+        originUniqueIdField: 'orig',  //origin ID
+        originGeometry: { //origin coordinates
+          x: 'Centroids_',
+          y: 'Centroid_1'
+        },
+        destinationUniqueIdField: 'dest', //destination ID
+        destinationGeometry: { //destination coordinates
+          x: 'US_lon',
+          y: 'US_lat'
         }
-          html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            }
+      },
 
-          #map {
-            min-height: 100%;
-            }
+      canvasBezierStyle: {
+        //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
+        //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
+        type: 'classBreaks',
+        field: '1995', // The field/value to be used for symbolizing the lines
 
-            .title {
-            padding: 3px 4px;
-            height: 8x;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
+        // Define the classes and symbols below
+        classBreakInfos: [{
+          classMinValue: 0,  // break values of this class, using field values defined above
+          classMaxValue: 306208,
+          symbol: {  // Define the symbology for this class
+            // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
+            strokeStyle: colours[0],  // flow line color
+            lineWidth: 3,  // flow line width
+            lineCap: 'round',  // shape of the stroke end
+          }
+        }, {  // another class
+          classMinValue: 306209,
+          classMaxValue: 894876,
+          symbol: {
+            strokeStyle: colours[1],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // one more class
+          classMinValue: 894877,
+          classMaxValue: 1830275,
+          symbol: {
+            strokeStyle: colours[2],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 1830276,
+          classMaxValue: 6827945,
+          symbol: {
+            strokeStyle: colours[3],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 6827946,
+          classMaxValue: 12168662,
+          symbol: {
+            strokeStyle: colours[4],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }],
+      },
+    })
+    //Define year 2000
+    var year_2000 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
+      originAndDestinationFieldIds: {
+        originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
+        originGeometry: { //origin coordinates
+          x: 'Centroids_',
+          y: 'Centroid_1'
+        },
+        destinationUniqueIdField: 'dest', //destination ID
+        destinationGeometry: { //destination coordinates
+          x: 'US_lon',
+          y: 'US_lat'
         }
+      },
 
-            .title i {
-            width: 15px;
-            height: 10px;
-            float: left;
-            margin-right: 8px;
-            opacity: 0.7;
+      canvasBezierStyle: {
+        //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
+        //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
+        type: 'classBreaks',
+        field: '2000', // The field/value to be used for symbolizing the lines
+
+        // Define the classes and symbols below
+        classBreakInfos: [{
+          classMinValue: 0,  // break values of this class, using field values defined above
+          classMaxValue: 306208,
+          symbol: {  // Define the symbology for this class
+            // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
+            strokeStyle: colours[0],  // flow line color
+            lineWidth: 3,  // flow line width
+            lineCap: 'round',  // shape of the stroke end
+          }
+        }, {  // another class
+          classMinValue: 306209,
+          classMaxValue: 894876,
+          symbol: {
+            strokeStyle: colours[1],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // one more class
+          classMinValue: 894877,
+          classMaxValue: 1830275,
+          symbol: {
+            strokeStyle: colours[2],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 1830276,
+          classMaxValue: 6827945,
+          symbol: {
+            strokeStyle: colours[3],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 6827946,
+          classMaxValue: 12168662,
+          symbol: {
+            strokeStyle: colours[4],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }],
+      },
+    })
+    // Define year 2005
+    var year_2005 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
+      originAndDestinationFieldIds: {
+        originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
+        originGeometry: { //origin coordinates
+          x: 'Centroids_',
+          y: 'Centroid_1'
+        },
+        destinationUniqueIdField: 'dest', //destination ID
+        destinationGeometry: { //destination coordinates
+          x: 'US_lon',
+          y: 'US_lat'
         }
-        </style>
+      },
 
-    </head>
+      canvasBezierStyle: {
+        //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
+        //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
+        type: 'classBreaks',
+        field: '2005', // The field/value to be used for symbolizing the lines
 
-    <body>
-      <nav id="menu"></nav>
-        <div id="map"></div>
+        // Define the classes and symbols below
+        classBreakInfos: [{
+          classMinValue: 0,  // break values of this class, using field values defined above
+          classMaxValue: 306208,
+          symbol: {  // Define the symbology for this class
+            // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
+            strokeStyle: colours[0],  // flow line color
+            lineWidth: 3,  // flow line width
+            lineCap: 'round',  // shape of the stroke end
+          }
+        }, {  // another class
+          classMinValue: 306209,
+          classMaxValue: 894876,
+          symbol: {
+            strokeStyle: colours[1],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // one more class
+          classMinValue: 894877,
+          classMaxValue: 1830275,
+          symbol: {
+            strokeStyle: colours[2],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 1830276,
+          classMaxValue: 6827945,
+          symbol: {
+            strokeStyle: colours[3],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 6827946,
+          classMaxValue: 12168662,
+          symbol: {
+            strokeStyle: colours[4],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }],
+      },
+    })
+    // Define year 2010
+    var year_2010 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
+      originAndDestinationFieldIds: {
+        originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
+        originGeometry: { //origin coordinates
+          x: 'Centroids_',
+          y: 'Centroid_1'
+        },
+        destinationUniqueIdField: 'dest', //destination ID
+        destinationGeometry: { //destination coordinates
+          x: 'US_lon',
+          y: 'US_lat'
+        }
+      },
 
-        <script type="text/javascript">
-       ///#f3cbd3,#eaa9bd,#dd88ac,#ca699d,#b14d8e,#91357d,#6c2167
-        var colours = ['#f3cbd3','#eaa9bd','#ca699d','#91357d','#6c2167']
-        var year_1990 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
-      
-              originAndDestinationFieldIds: {
-                originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
-                originGeometry: { //origin coordinates
-                  x: 'Centroids_',
-                  y: 'Centroid_1'
-                },
-                destinationUniqueIdField: 'dest', //destination ID
-                destinationGeometry: { //destination coordinates
-                  x: 'US_lon',
-                  y: 'US_lat'
-                }
-              },
-         
-              
+      canvasBezierStyle: {
+        //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
+        //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
+        type: 'classBreaks',
+        field: '2010', // The field/value to be used for symbolizing the lines
 
-              canvasBezierStyle: {
-              //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
-              //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
-                type: 'classBreaks',
-                field: '1990', // The field/value to be used for symbolizing the lines
+        // Define the classes and symbols below
+        classBreakInfos: [{
+          classMinValue: 0,  // break values of this class, using field values defined above
+          classMaxValue: 306208,
+          symbol: {  // Define the symbology for this class
+            // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
+            strokeStyle: colours[0],  // flow line color
+            lineWidth: 3,  // flow line width
+            lineCap: 'round',  // shape of the stroke end
+          }
+        }, {  // another class
+          classMinValue: 306209,
+          classMaxValue: 894876,
+          symbol: {
+            strokeStyle: colours[1],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // one more class
+          classMinValue: 894877,
+          classMaxValue: 1830275,
+          symbol: {
+            strokeStyle: colours[2],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 1830276,
+          classMaxValue: 6827945,
+          symbol: {
+            strokeStyle: colours[3],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 6827946,
+          classMaxValue: 12168662,
+          symbol: {
+            strokeStyle: colours[4],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }],
+      },
+    })
+    // Define year 2015
+    var year_2015 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
+      originAndDestinationFieldIds: {
+        originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
+        originGeometry: { //origin coordinates
+          x: 'Centroids_',
+          y: 'Centroid_1'
+        },
+        destinationUniqueIdField: 'dest', //destination ID
+        destinationGeometry: { //destination coordinates
+          x: 'US_lon',
+          y: 'US_lat'
+        }
+      },
 
-                  // Define the classes and symbols below
-                  classBreakInfos: [{
-                  classMinValue: 0,  // break values of this class, using field values defined above
-                  classMaxValue: 306208,
-                  symbol: {  // Define the symbology for this class
-                             // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
-                    strokeStyle: colours[0],  // flow line color
-                    lineWidth: 3,  // flow line width
-                    lineCap: 'round',  // shape of the stroke end
-                  }
-                }, {  // another class
-                  classMinValue: 306209,
-                  classMaxValue: 894876,
-                  symbol: {
-                    strokeStyle: colours[1],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // one more class
-                  classMinValue: 894877,
-                  classMaxValue: 1830275,
-                  symbol: {
-                    strokeStyle: colours[2],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // more classes if needed
-                    classMinValue: 1830276,
-                    classMaxValue: 6827945,
-                    symbol: {
-                      strokeStyle: colours[3],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                }, {  // more classes if needed
-                    classMinValue: 6827946,
-                    classMaxValue: 12168662,
-                    symbol: {
-                      strokeStyle: colours[4],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                  }],
-              },
-            })
-           var year_1995   = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
-              originAndDestinationFieldIds: {
-                originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
-                originGeometry: { //origin coordinates
-                  x: 'Centroids_',
-                  y: 'Centroid_1'
-                },
-                destinationUniqueIdField: 'dest', //destination ID
-                destinationGeometry: { //destination coordinates
-                  x: 'US_lon',
-                  y: 'US_lat'
-                }
-              },
-              pathDisplayMode: 'all',
-              
+      canvasBezierStyle: {
+        //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
+        //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
+        type: 'classBreaks',
+        field: '2015', // The field/value to be used for symbolizing the lines
 
-              canvasBezierStyle: {
-              //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
-              //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
-                type: 'classBreaks',
-                field: '1995', // The field/value to be used for symbolizing the lines
+        // Define the classes and symbols below
+        classBreakInfos: [{
+          classMinValue: 0,  // break values of this class, using field values defined above
+          classMaxValue: 306208,
+          symbol: {  // Define the symbology for this class
+            // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
+            strokeStyle: colours[0],  // flow line color
+            lineWidth: 3,  // flow line width
+            lineCap: 'round',  // shape of the stroke end
+          }
+        }, {  // another class
+          classMinValue: 306209,
+          classMaxValue: 894876,
+          symbol: {
+            strokeStyle: colours[1],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // one more class
+          classMinValue: 894877,
+          classMaxValue: 1830275,
+          symbol: {
+            strokeStyle: colours[2],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 1830276,
+          classMaxValue: 6827945,
+          symbol: {
+            strokeStyle: colours[3],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 6827946,
+          classMaxValue: 12168662,
+          symbol: {
+            strokeStyle: colours[4],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }],
+      },
+    })
+    // Define year 2019
+    var year_2019 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
+      originAndDestinationFieldIds: {
+        originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
+        originGeometry: { //origin coordinates
+          x: 'Centroids_',
+          y: 'Centroid_1'
+        },
+        destinationUniqueIdField: 'dest', //destination ID
+        destinationGeometry: { //destination coordinates
+          x: 'US_lon',
+          y: 'US_lat'
+        }
+      },
 
-                   // Define the classes and symbols below
-                   classBreakInfos: [{
-                  classMinValue: 0,  // break values of this class, using field values defined above
-                  classMaxValue: 306208,
-                  symbol: {  // Define the symbology for this class
-                             // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
-                    strokeStyle: colours[0],  // flow line color
-                    lineWidth: 3,  // flow line width
-                    lineCap: 'round',  // shape of the stroke end
-                  }
-                }, {  // another class
-                  classMinValue: 306209,
-                  classMaxValue: 894876,
-                  symbol: {
-                    strokeStyle: colours[1],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // one more class
-                  classMinValue: 894877,
-                  classMaxValue: 1830275,
-                  symbol: {
-                    strokeStyle: colours[2],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // more classes if needed
-                    classMinValue: 1830276,
-                    classMaxValue: 6827945,
-                    symbol: {
-                      strokeStyle: colours[3],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                }, {  // more classes if needed
-                    classMinValue: 6827946,
-                    classMaxValue: 12168662,
-                    symbol: {
-                      strokeStyle: colours[4],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                  }],
-              },
-            })
-            var year_2000 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
-              originAndDestinationFieldIds: {
-                originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
-                originGeometry: { //origin coordinates
-                  x: 'Centroids_',
-                  y: 'Centroid_1'
-                },
-                destinationUniqueIdField: 'dest', //destination ID
-                destinationGeometry: { //destination coordinates
-                  x: 'US_lon',
-                  y: 'US_lat'
-                }
-              },
-              pathDisplayMode: 'all',
+      canvasBezierStyle: {
+        //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
+        //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
+        type: 'classBreaks',
+        field: '2019', // The field/value to be used for symbolizing the lines
 
-              canvasBezierStyle: {
-              //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
-              //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
-                type: 'classBreaks',
-                field: '2000', // The field/value to be used for symbolizing the lines
+        // Define the classes and symbols below
+        classBreakInfos: [{
+          classMinValue: 0,  // break values of this class, using field values defined above
+          classMaxValue: 306208,
+          symbol: {  // Define the symbology for this class
+            // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
+            strokeStyle: colours[0],  // flow line color
+            lineWidth: 3,  // flow line width
+            lineCap: 'round',  // shape of the stroke end
+          }
+        }, {  // another class
+          classMinValue: 306209,
+          classMaxValue: 894876,
+          symbol: {
+            strokeStyle: colours[1],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // one more class
+          classMinValue: 894877,
+          classMaxValue: 1830275,
+          symbol: {
+            strokeStyle: colours[2],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 1830276,
+          classMaxValue: 6827945,
+          symbol: {
+            strokeStyle: colours[3],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }, {  // more classes if needed
+          classMinValue: 6827946,
+          classMaxValue: 12168662,
+          symbol: {
+            strokeStyle: colours[4],
+            lineWidth: 3,
+            lineCap: 'round',
+          }
+        }],
+      },
 
-                  // Define the classes and symbols below
-                  classBreakInfos: [{
-                  classMinValue: 0,  // break values of this class, using field values defined above
-                  classMaxValue: 306208,
-                  symbol: {  // Define the symbology for this class
-                             // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
-                    strokeStyle: colours[0],  // flow line color
-                    lineWidth: 3,  // flow line width
-                    lineCap: 'round',  // shape of the stroke end
-                  }
-                }, {  // another class
-                  classMinValue: 306209,
-                  classMaxValue: 894876,
-                  symbol: {
-                    strokeStyle: colours[1],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // one more class
-                  classMinValue: 894877,
-                  classMaxValue: 1830275,
-                  symbol: {
-                    strokeStyle: colours[2],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // more classes if needed
-                    classMinValue: 1830276,
-                    classMaxValue: 6827945,
-                    symbol: {
-                      strokeStyle: colours[3],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                }, {  // more classes if needed
-                    classMinValue: 6827946,
-                    classMaxValue: 12168662,
-                    symbol: {
-                      strokeStyle: colours[4],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                  }],
-              },
-            })
-           var year_2005 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
-              originAndDestinationFieldIds: {
-                originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
-                originGeometry: { //origin coordinates
-                  x: 'Centroids_',
-                  y: 'Centroid_1'
-                },
-                destinationUniqueIdField: 'dest', //destination ID
-                destinationGeometry: { //destination coordinates
-                  x: 'US_lon',
-                  y: 'US_lat'
-                }
-              },
+    })
 
-              canvasBezierStyle: {
-              //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
-              //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
-                type: 'classBreaks',
-                field: '2005', // The field/value to be used for symbolizing the lines
-
-                   // Define the classes and symbols below
-                   classBreakInfos: [{
-                  classMinValue: 0,  // break values of this class, using field values defined above
-                  classMaxValue: 306208,
-                  symbol: {  // Define the symbology for this class
-                             // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
-                    strokeStyle: colours[0],  // flow line color
-                    lineWidth: 3,  // flow line width
-                    lineCap: 'round',  // shape of the stroke end
-                  }
-                }, {  // another class
-                  classMinValue: 306209,
-                  classMaxValue: 894876,
-                  symbol: {
-                    strokeStyle: colours[1],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // one more class
-                  classMinValue: 894877,
-                  classMaxValue: 1830275,
-                  symbol: {
-                    strokeStyle: colours[2],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // more classes if needed
-                    classMinValue: 1830276,
-                    classMaxValue: 6827945,
-                    symbol: {
-                      strokeStyle: colours[3],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                }, {  // more classes if needed
-                    classMinValue: 6827946,
-                    classMaxValue: 12168662,
-                    symbol: {
-                      strokeStyle: colours[4],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                  }],
-              },
-            })
-            var year_2010 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
-              originAndDestinationFieldIds: {
-                originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
-                originGeometry: { //origin coordinates
-                  x: 'Centroids_',
-                  y: 'Centroid_1'
-                },
-                destinationUniqueIdField: 'dest', //destination ID
-                destinationGeometry: { //destination coordinates
-                  x: 'US_lon',
-                  y: 'US_lat'
-                }
-              },
-
-              canvasBezierStyle: {
-              //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
-              //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
-                type: 'classBreaks',
-                field: '2010', // The field/value to be used for symbolizing the lines
-
-                    // Define the classes and symbols below
-                    classBreakInfos: [{
-                  classMinValue: 0,  // break values of this class, using field values defined above
-                  classMaxValue: 306208,
-                  symbol: {  // Define the symbology for this class
-                             // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
-                    strokeStyle: colours[0],  // flow line color
-                    lineWidth: 3,  // flow line width
-                    lineCap: 'round',  // shape of the stroke end
-                  }
-                }, {  // another class
-                  classMinValue: 306209,
-                  classMaxValue: 894876,
-                  symbol: {
-                    strokeStyle: colours[1],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // one more class
-                  classMinValue: 894877,
-                  classMaxValue: 1830275,
-                  symbol: {
-                    strokeStyle: colours[2],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // more classes if needed
-                    classMinValue: 1830276,
-                    classMaxValue: 6827945,
-                    symbol: {
-                      strokeStyle: colours[3],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                }, {  // more classes if needed
-                    classMinValue: 6827946,
-                    classMaxValue: 12168662,
-                    symbol: {
-                      strokeStyle: colours[4],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                  }],
-              },
-            })
-          var  year_2015 =  L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
-              originAndDestinationFieldIds: {
-                originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
-                originGeometry: { //origin coordinates
-                  x: 'Centroids_',
-                  y: 'Centroid_1'
-                },
-                destinationUniqueIdField: 'dest', //destination ID
-                destinationGeometry: { //destination coordinates
-                  x: 'US_lon',
-                  y: 'US_lat'
-                }
-              },
-
-              canvasBezierStyle: {
-              //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
-              //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
-                type: 'classBreaks',
-                field: '2015', // The field/value to be used for symbolizing the lines
-
-                    // Define the classes and symbols below
-                    classBreakInfos: [{
-                  classMinValue: 0,  // break values of this class, using field values defined above
-                  classMaxValue: 306208,
-                  symbol: {  // Define the symbology for this class
-                             // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
-                    strokeStyle: colours[0],  // flow line color
-                    lineWidth: 3,  // flow line width
-                    lineCap: 'round',  // shape of the stroke end
-                  }
-                }, {  // another class
-                  classMinValue: 306209,
-                  classMaxValue: 894876,
-                  symbol: {
-                    strokeStyle: colours[1],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // one more class
-                  classMinValue: 894877,
-                  classMaxValue: 1830275,
-                  symbol: {
-                    strokeStyle: colours[2],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // more classes if needed
-                    classMinValue: 1830276,
-                    classMaxValue: 6827945,
-                    symbol: {
-                      strokeStyle: colours[3],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                }, {  // more classes if needed
-                    classMinValue: 6827946,
-                    classMaxValue: 12168662,
-                    symbol: {
-                      strokeStyle: colours[4],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                  }],
-              },
-            })
-       var year_2019 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the cook.js data
-              originAndDestinationFieldIds: {
-                originUniqueIdField: 'orig',  //origin ID, use GEOID_B if you want to reverse the flow
-                originGeometry: { //origin coordinates
-                  x: 'Centroids_',
-                  y: 'Centroid_1'
-                },
-                destinationUniqueIdField: 'dest', //destination ID
-                destinationGeometry: { //destination coordinates
-                  x: 'US_lon',
-                  y: 'US_lat'
-                }
-              },
-              pathDisplayMode: 'all',
-
-              canvasBezierStyle: {
-              //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
-              //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
-                type: 'classBreaks',
-                field: '2019', // The field/value to be used for symbolizing the lines
-
-                // Define the classes and symbols below
-                classBreakInfos: [{
-                  classMinValue: 0,  // break values of this class, using field values defined above
-                  classMaxValue: 306208,
-                  symbol: {  // Define the symbology for this class
-                             // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
-                    strokeStyle: colours[0],  // flow line color
-                    lineWidth: 3,  // flow line width
-                    lineCap: 'round',  // shape of the stroke end
-                  }
-                }, {  // another class
-                  classMinValue: 306209,
-                  classMaxValue: 894876,
-                  symbol: {
-                    strokeStyle: colours[1],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // one more class
-                  classMinValue: 894877,
-                  classMaxValue: 1830275,
-                  symbol: {
-                    strokeStyle: colours[2],
-                    lineWidth: 3,
-                    lineCap: 'round',
-                  }
-                }, {  // more classes if needed
-                    classMinValue: 1830276,
-                    classMaxValue: 6827945,
-                    symbol: {
-                      strokeStyle: colours[3],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                }, {  // more classes if needed
-                    classMinValue: 6827946,
-                    classMaxValue: 12168662,
-                    symbol: {
-                      strokeStyle: colours[4],
-                      lineWidth: 3,
-                      lineCap: 'round',
-                    }
-                  }],
-              },
-              
-            })
-
-        var map = L.map('map', {
-            center: [38.16, -96.96],
-            zoom: 4.2,
-		layers: []
-	});
-
+    var map = L.map('map', {
+      center: [18.16, -96.96],
+      zoom: 4.2,
+      layers: []
+      // Start with no layers because in order to get the pop-ups to change depending on the year, had to use 'on(baselayerchange)'
+      // This means that the pop-ups will only show up when the baselayer changes. So, I decided to have the map initialized as empty
+      // and then will include pop-ups at every year. 
+    });
+    // Set up var baselayers because this is what L.control.layers needs
     var baseLayers = {
-		"1990": year_1990,
-		"1995": year_1995,
-        "2000": year_2000,
-        "2005": year_2005,
-        "2010": year_2010,
-        "2015": year_2015,
-        "2019": year_2019
-	};
-  L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWxpc29uZGVlcmUiLCJhIjoiY2s1ZzRiZ3JsMDQycDNrcW1nMHcxODhkayJ9.HO_b7LH4WrchBsGVMuroIg', {
-            attribution: 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.',
-            }).addTo(map);
+      "1990": year_1990,
+      "1995": year_1995,
+      "2000": year_2000,
+      "2005": year_2005,
+      "2010": year_2010,
+      "2015": year_2015,
+      "2019": year_2019
+    };
 
+    // Set bounds
+    var southWest = L.latLng(-55.712, -161.227),
+      northEast = L.latLng(60, -20.125),
+      mybounds = L.latLngBounds(southWest, northEast);
+
+    // set tile layer to match the other two maps 
+    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWxpc29uZGVlcmUiLCJhIjoiY2s1ZzRiZ3JsMDQycDNrcW1nMHcxODhkayJ9.HO_b7LH4WrchBsGVMuroIg', {
+      attribution: 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.',
+      maxZoom: 18,
+      minZoom: 4,
+      bounds: mybounds,
+    }).addTo(map);
+
+    // Set limits on dragging, do not let user drag outside of bounds 
+    map.on('drag', function () {
+      map.panInsideBounds(mybounds, { animate: false });
+    });
     L.control.layers(baseLayers).addTo(map);
-    
 
 
-function getColor(value) {
-            return value > 6827945 ? colours[4] :
-                value > 1830275 ? colours[3] :
-                    value > 894876 ? colours[2] :
-                        value > 306208 ? colours[1] :
-                        colours[0];
-        }
+    // Set colours for the legend 
+    function getColor(value) {
+      return value > 6827945 ? colours[4] :
+        value > 1830275 ? colours[3] :
+          value > 894876 ? colours[2] :
+            value > 306208 ? colours[1] :
+              colours[0];
+    }
 
+    // Create legend
+    var legend = L.control({ position: 'bottomright' }); // Try the other three corners if you like.
 
-var legend = L.control({ position: 'bottomright' }); // Try the other three corners if you like.
+    legend.onAdd = function (map) {
 
-legend.onAdd = function (map) {
+      var div = L.DomUtil.create('div', 'legend'),
+        grades = [0, 306208, 894876, 1830275, 6827945]; // The break values to define the intervals of population, note we begin from 0 here
 
-    var div = L.DomUtil.create('div', 'legend'),
-    grades = [0, 306208, 894876, 1830275, 6827945]; // The break values to define the intervals of population, note we begin from 0 here
+      div.innerHTML = '<b>Number of Migrants into the United <br> States Each Year<br></b>'; // The legend title (HTML-based), in this case it's Population Density 2011
 
-    div.innerHTML = '<b>Number of Migrants into the United <br> States Each Year<br></b>'; // The legend title (HTML-based), in this case it's Population Density 2011
-
-    // Loop through our the classes and generate a label with a color box for each interval.
-    // If you are creating a choropleth map, you DO NOT need to change lines below.
-    for (var i = 0; i < grades.length; i++) {
+      // Loop through our the classes and generate a label with a color box for each interval.
+      // If you are creating a choropleth map, you DO NOT need to change lines below.
+      for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i>' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
+          '<i style="background:' + getColor(grades[i] + 1) + '"></i>' +
+          grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+      }
 
-    return div;
-};
+      return div;
+    };
 
+    legend.addTo(map);
 
-legend.addTo(map);
-var geojson;
-var geojsonMarkerOptions = {
-    opacity: 0,
-    fillOpacity: 0
-};
+    // Create two variables: geojson and geojsonMarkerOptions
+    // geojson is a placeholder and will be used for the popups
+    // geojsonMarkerOptions defines the style for the markers
+    // I am leaving the markers transparent, the popups will showup when the already defined
+    // markers over the origins are clicked. 
 
+    var geojson;
+    var geojsonMarkerOptions = {
+      opacity: 0,
+      fillOpacity: 0
+    };
 
+    // when the baselayer is changed, change the data that goes into the pop-ups
+    // this is so we can see the number of migrants from each country into the USA
+    // for each year. 
 
+    map.on('baselayerchange', function (e) {
+      var year = String(e.name)
 
-map.on('baselayerchange', function(e) {
-  var year = String(e.name)
+      L.geoJSON(data, {
+        pointToLayer: function (feature, latlng) {
+          return L.circleMarker(latlng, geojsonMarkerOptions);
+        },
+        onEachFeature: function (feature, layer) {
+          content = "<b>Country: </b>" + feature.properties.orig + "<br><b>Number of Migrants:</b> " + feature.properties[year]
+          layer.bindPopup(content);
+        }
+      }).addTo(map);
+    });
 
-L.geoJSON(data, {
-    pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
-    },
-    onEachFeature: function (feature, layer) {
-      content = "<b>Country: </b>" + feature.properties.orig + "<br><b>Number of Migrants:</b> " + feature.properties[year]  
-      layer.bindPopup(content);
-    }
-}).addTo(map);
+    // set a title that just tells the user to select a year
+    var title = L.control({ position: 'topright' }); // position of the title
 
+    title.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'title'); // create a div with a class "title"
+      this._div.innerHTML = "<h4>Select a year  from the choices above!</h4>";  // Title text, may use html to customize
+      return this._div;
+    };
 
+    title.addTo(map);
 
+  </script>
+</body>
 
-
-});
-
-var title = L.control({position: 'topright'}); // position of the title
-
-title.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'title'); // create a div with a class "title"
-    this._div.innerHTML = "<h4>Select a year  from the choices above!</h4>";  // Title text, may use html to customize
-    return this._div;
-};
-
-title.addTo(map);
-
-
-
-        </script>
-   </body>
 </html>
