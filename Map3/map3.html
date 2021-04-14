@@ -48,12 +48,28 @@
             border-radius: 5px;
             width: 200px;
             float: left;
+            margin-left: 70px;
+            margin-top: 70px;
             opacity: 1.0;
             font-family: Arial, Helvetica, sans-serif;
             z-index: 5;
-            position: absolute;
+            position: fixed;
             overflow: visible;
             height: 300px;
+                body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+            z-index: -5;
+            position: fixed
+        }
+        body > svg {
+        position: absolute;
+        z-index: -10;
+        top: 0;
         }
     </style>
 
@@ -62,7 +78,7 @@
 <body>
     <div id="chart">
     </div>
-    <div id="map" style="width: 60%; height: 700px; margin-left: 220px "></div>
+    <div id="map"></div>
 
     <script type="text/javascript">
         // Used this tutorial https://neiugis.github.io/lab5/ to make the map 
@@ -141,10 +157,10 @@
                         ['Other South America', props['Other South America']]
                     ],
 
-                    type: 'donut',  // chart type
+                    type: 'pie',  // chart type
                 },
 
-                donut: { // options to customize the donut chart
+                pie: { // options to customize the donut chart
                     label: {
                         show: false // set to not show labels on the segments (too busy)
                     },
@@ -183,14 +199,33 @@
         }
 
         
-        // Combine the mouseover and mouseout actions (defined above)
+    // Change style of state if it is clicked, reset if it is not
+        var prevLayerClicked = null;
+
         function onEachFeature(feature, layer) {
             layer.on({
-                mouseover: highlightFeature,
-                mouseout: resetHighlight,
-            });
-        }
+                click: function(e){
+                    // If you have a layer inside  this variable
+                        if (prevLayerClicked !== null) {
+                        // Reset style
+                        prevLayerClicked.setStyle({ weight: 2,
+                                                    opacity: 0.1,
+                                                    color: 'black',
+                                                    fillOpacity: 1,
+                                                    dashArray: 0,
+                                                                })
+                                                        }
+                       // If there is no layer clicked, highlight feature (as defined above)
+                       // This includes the chart popping up for each state
+                        highlightFeature(e);
+        
 
+                    // Store clicked layer into this variable
+                    prevLayerClicked = layer;
+                                                        }
+                                          });
+                                                 }
+        
         geojson = L.geoJson(data, {
             style: style,
             onEachFeature: onEachFeature
