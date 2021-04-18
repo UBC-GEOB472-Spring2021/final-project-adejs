@@ -7,7 +7,7 @@ var config = {
     use3dTerrain: false,
     title: 'Late 2018 Migrant Caravan',
     subtitle: '',
-    byline: 'UBC GEOB 472 W2020/21',
+    byline: '',
     footer: 'Data points based on maps from ' + '<a href ="https://cis.org/Migrant-Caravan-Map">CIS</a>' + ' and ' + '<a href="https://www.mercurynews.com/2018/11/14/map-migrant-caravan-tijuana/">Mercury News.</a>' +
     '<p> Descriptions, dates, and caravan sizes attributed to sources linked at points. </p>' +
     '<p> Images attributed to linked sources. </p>',
