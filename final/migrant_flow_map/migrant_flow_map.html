@@ -1,0 +1,294 @@
+
+<html>
+
+    <head>
+      <title>Latin America to United States Immigration</title>
+    
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+    
+      <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+    
+      <!-- Load animation tweening library requirement for CanvasFlowMapLayer -->
+      <script src="https://unpkg.com/@tweenjs/tween.js@18.5.0/dist/tween.umd.js"></script>
+    
+      <!-- then load CanvasFlowMapLayer -->
+      <script src="CanvasFlowmapLayer.js"></script>
+    
+      <script type="text/javascript" src="migration_percents.js"></script>
+    
+    
+      <style type="text/css">
+        .legend {
+          padding: 6px 8px;
+          line-height: 18px;
+          background: rgba(255, 255, 255, 0.9);
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+          border-radius: 5px;
+        }
+    
+        /* Adjust the values below to change the appearance of the legend color boxes */
+        .legend i {
+          width: 18px;
+          height: 18px;
+          float: left;
+          margin-right: 8px;
+          opacity: 0.7;
+        }
+    
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+        }
+    
+        #map {
+          min-height: 100%;
+        }
+    
+        .title {
+          padding: 3px 4px;
+          height: 8x;
+          background: rgba(255, 255, 255, 0.9);
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+          border-radius: 5px;
+        }
+    
+        .title i {
+          width: 15px;
+          height: 10px;
+          float: left;
+          margin-right: 8px;
+          opacity: 0.7;
+        }
+      </style>
+    
+    </head>
+    
+    <body>
+      <nav id="menu"></nav>
+      <div id="map"></div>
+    
+      <script type="text/javascript">
+        // Define colours that will be used as different flows (dependenting on number of migrants)
+    
+        var colours = ['#f3cbd3', '#eaa9bd', '#ca699d', '#91357d', '#6c2167']
+    
+    // Define function that has all of the styling and class break data. It is the same for each year. 
+    function flow_style(year) {
+      return {
+         //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
+            //Other options: https://developers.arcgis.com/documentation/common-data-types/renderer-objects.htm
+            type: 'classBreaks',
+            field: year, // The field/value to be used for symbolizing the lines
+    
+            // Define the classes and symbols below
+            classBreakInfos: [{
+              classMinValue: 0,  // break values of this class, using field values defined above
+              classMaxValue: 2.13,
+              symbol: {  // Define the symbology for this class
+                // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
+                strokeStyle: colours[0],  // flow line color
+                lineWidth: 3,  // flow line width
+                lineCap: 'round',  // shape of the stroke end
+              }
+            }, {  // another class
+              classMinValue: 2.13,
+              classMaxValue: 6.6725,
+              symbol: {
+                strokeStyle: colours[1],
+                lineWidth: 3,
+                lineCap: 'round',
+              }
+            }, {  // one more class
+              classMinValue: 6.6725,
+              classMaxValue: 11.6125,
+              symbol: {
+                strokeStyle: colours[2],
+                lineWidth: 3,
+                lineCap: 'round',
+              }
+            }, {  // more classes if needed
+              classMinValue: 11.6125,
+              classMaxValue: 20.49,
+              symbol: {
+                strokeStyle: colours[3],
+                lineWidth: 3,
+                lineCap: 'round',
+              }
+            }, {  // more classes if needed
+              classMinValue: 20.49,
+              classMaxValue: 48,
+              symbol: {
+                strokeStyle: colours[4],
+                lineWidth: 3,
+                lineCap: 'round',
+              }
+            }],
+          }
+    
+    }
+    // Define function that sets the flow details for each year
+    // The details are always the same
+    function flow_details() {
+      return {
+        originUniqueIdField: 'orig',  //origin ID
+            originGeometry: { //origin coordinates
+              x: 'orig_lon',
+              y: 'orig_lat'
+            },
+            destinationUniqueIdField: 'dest', //destination ID
+            destinationGeometry: { //destination coordinates
+              x: 'dest_lon',
+              y: 'dest_lat'
+            }
+      }}
+    
+      // DEFINE THE YEARS! //
+    
+       // Define year 1995
+       var decade_1 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
+          originAndDestinationFieldIds: flow_details(),
+          pathDisplayMode: 'all',
+          canvasBezierStyle: flow_style('1973_1979')
+        })
+    
+        //Define year 2000
+        var decade_2 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
+          originAndDestinationFieldIds: flow_details(),
+          pathDisplayMode: 'all',
+          canvasBezierStyle: flow_style('1980_1989')
+        })
+    
+        // Define year 2005
+        var decade_3 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
+          originAndDestinationFieldIds: flow_details(),
+          pathDisplayMode: 'all',
+          canvasBezierStyle: flow_style('1990_1999')
+        })
+    
+        // Define year 2010
+        var decade_4 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
+          originAndDestinationFieldIds: flow_details(),
+          pathDisplayMode: 'all',
+          canvasBezierStyle: flow_style('2000_2010')
+        })
+    
+        // Initialize Map 
+        var map = L.map('map', {
+          center: [18.16, -96.96],
+          zoom: 4.2,
+          layers: []
+          // Start with no layers because in order to get the pop-ups to change depending on the year, had to use 'on(baselayerchange)'
+          // This means that the pop-ups will only show up when the baselayer changes. So, I decided to have the map initialized as empty
+          // and then will include pop-ups at every year. 
+        });
+    
+        // Set up var baselayers because this is what L.control.layers needs
+        var baseLayers = {
+          "1973_1979": decade_1,
+          "1980_1989": decade_2,
+          "1990_1999": decade_3,
+          "2000_2010": decade_4,
+        };
+    
+        // Set bounds
+        var southWest = L.latLng(-55.712, -161.227),
+          northEast = L.latLng(60, -20.125),
+          mybounds = L.latLngBounds(southWest, northEast);
+    
+        // set tile layer to match the other two maps 
+        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWxpc29uZGVlcmUiLCJhIjoiY2s1ZzRiZ3JsMDQycDNrcW1nMHcxODhkayJ9.HO_b7LH4WrchBsGVMuroIg', {
+          attribution: 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.',
+          maxZoom: 18,
+          minZoom: 4,
+          bounds: mybounds,
+        }).addTo(map);
+    
+        // Set limits on dragging, do not let user drag outside of bounds 
+        map.on('drag', function () {
+          map.panInsideBounds(mybounds, { animate: false });
+        });
+
+        L.control.layers(baseLayers).addTo(map);
+    
+        // Set colours for the legend 
+        function getColor(value) {
+          return value > 20 ? colours[4] :
+            value > 11 ? colours[3] :
+              value > 6 ? colours[2] :
+                value > 2 ? colours[1] :
+                  colours[0];
+        }
+    
+
+        // Create legend
+        var legend = L.control({ position: 'bottomright' }); // Try the other three corners if you like.
+    
+        legend.onAdd = function (map) {
+    
+          var div = L.DomUtil.create('div', 'legend'),
+            grades = [0, 2, 6, 11, 20]; // The break values to define the intervals of population, note we begin from 0 here
+    
+          div.innerHTML = '<b>Percentage of Origin Country <br>Population that Migrate to the <br>United States in Selected Decade<br></b>'; // The legend title (HTML-based), in this case it's Population Density 2011
+    
+          // Loop through our the classes and generate a label with a color box for each interval.
+          // If you are creating a choropleth map, you DO NOT need to change lines below.
+          for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+              '<i style="background:' + getColor(grades[i] + 1) + '"></i>' +
+              grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+          }
+    
+          return div;
+        };
+    
+        legend.addTo(map);
+    
+        // Create two variables: geojson and geojsonMarkerOptions
+        // geojson is a placeholder and will be used for the popups
+        // geojsonMarkerOptions defines the style for the markers
+        // I am leaving the markers transparent, the popups will showup when the already defined
+        // markers over the origins are clicked. 
+    
+        var geojson;
+        var geojsonMarkerOptions = {
+          opacity: 0,
+          fillOpacity: 0
+        };
+    
+        // when the baselayer is changed, change the data that goes into the pop-ups
+        // this is so we can see the number of migrants from each country into the USA
+        // for each year. 
+    
+        map.on('baselayerchange', function (e) {
+          var year = String(e.name)
+    
+          L.geoJSON(data, {
+            pointToLayer: function (feature, latlng) {
+              return L.circleMarker(latlng, geojsonMarkerOptions);
+            },
+            onEachFeature: function (feature, layer) {
+              content = "<b>Country: </b>" + feature.properties.orig + "<br><b>Percentages:</b> " + feature.properties[year] + " %"
+              layer.bindPopup(content);
+            }
+          }).addTo(map);
+        });
+    
+        // set a title that just tells the user to select a year
+        var title = L.control({ position: 'topright' }); // position of the title
+    
+        title.onAdd = function (map) {
+          this._div = L.DomUtil.create('div', 'title'); // create a div with a class "title"
+          this._div.innerHTML = "<h4>Select a decade  from the choices above</h4>";  // Title text, may use html to customize
+          return this._div;
+        };
+        title.addTo(map);
+    
+      </script>
+    </body>
+    </html>
