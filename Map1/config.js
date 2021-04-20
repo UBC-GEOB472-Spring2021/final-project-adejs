@@ -22,7 +22,7 @@ var config = {
                 '<p> Date: October 13 </p>' +
                 '<p> Caravan size: 1300 </p>' +
                 'This is the starting point for many in the late 2018 migrant caravan.' +
-                '<p> <a href="https://rosanjose.iom.int/SITE/en/migrant-caravans">Source</a> </p>' +
+                '<p> <a href="https://rosanjose.iom.int/SITE/en/migrant-caravans" target="_blank" rel="noopener noreferrer">Source</a> </p>' +
                 '<p>Image: Jorge Cabrera / Reuters</p>',
             location: {
                 center: [ -88.024553,
@@ -51,7 +51,7 @@ var config = {
                 '<p> Date: October 14 </p>' +
                 '<p> Caravan size: 1500 </p>' +
                 '"Hundreds more Hondurans have joined a caravan of migrants moving toward the country’s border with Guatemala in a desperate attempt to flee poverty and seek new lives in the United States."' +
-                '<p> <a href="https://apnews.com/article/200195140809441bbb214f4dcaef1cb4">Source</a> </p>' +
+                '<p> <a href="https://apnews.com/article/200195140809441bbb214f4dcaef1cb4" target="_blank" rel="noopener noreferrer">Source</a> </p>' +
             '<p>Image: Moises Castillo / AP</p>',
             location: {
                 center: [ -89.184867,
