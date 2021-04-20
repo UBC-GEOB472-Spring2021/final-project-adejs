@@ -17,7 +17,7 @@
 
 
 #### [Link to Migrant Caravan Map](https://ubc-geob472-spring2021.github.io/final-project-adejs/Map1/map1story.html)
-![image](https://user-images.githubusercontent.com/39204272/115137022-61f30180-9fd8-11eb-8056-21f6ed543b0f.png)
+![image](https://user-images.githubusercontent.com/39204272/115335581-54fa1d80-a152-11eb-8da1-9b2c1bb56c58.png)
 
 
 
