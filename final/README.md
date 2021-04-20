@@ -13,7 +13,8 @@
 
 
 #### [Link to Latin American Population in US Map](https://ubc-geob472-spring2021.github.io/final-project-adejs/Map3/map3.html)
-![image](https://user-images.githubusercontent.com/39204272/115137054-8f3faf80-9fd8-11eb-99c6-d2dbe0d199e6.png)
+![image](https://user-images.githubusercontent.com/39204272/115335519-398f1280-a152-11eb-9275-b11aead2beaf.png)
+
 
 #### [Link to Migrant Caravan Map](https://ubc-geob472-spring2021.github.io/final-project-adejs/Map1/map1story.html)
 ![image](https://user-images.githubusercontent.com/39204272/115137022-61f30180-9fd8-11eb-8056-21f6ed543b0f.png)
