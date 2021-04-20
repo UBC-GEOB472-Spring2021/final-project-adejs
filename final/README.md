@@ -3,7 +3,7 @@
 
 ## Alison Deere, Jason Adle, Elana Shi, Sara Jafroudi
 
-
+## Group Essay: 
 ### [Link to Group Essay](https://ubc-geob472-spring2021.github.io/final-project-adejs/ProjectPage/mainpage.html)
 
 ## Interactive Visuals: 
