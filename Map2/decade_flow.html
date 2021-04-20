@@ -18,7 +18,7 @@
       <!-- then load CanvasFlowMapLayer -->
       <script src="CanvasFlowmapLayer.js"></script>
     
-      <script type="text/javascript" src="decade_flow.js"></script>
+      <script type="text/javascript" src="migration_percents.js"></script>
     
     
       <style type="text/css">
@@ -89,7 +89,7 @@
             // Define the classes and symbols below
             classBreakInfos: [{
               classMinValue: 0,  // break values of this class, using field values defined above
-              classMaxValue: 44217,
+              classMaxValue: 2.13,
               symbol: {  // Define the symbology for this class
                 // See an example from the documentation:https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer/blob/master/docs/class-breaks-symbology/index.html#L94-L137
                 strokeStyle: colours[0],  // flow line color
@@ -97,32 +97,32 @@
                 lineCap: 'round',  // shape of the stroke end
               }
             }, {  // another class
-              classMinValue: 44217,
-              classMaxValue: 128059,
+              classMinValue: 2.13,
+              classMaxValue: 6.6725,
               symbol: {
                 strokeStyle: colours[1],
                 lineWidth: 3,
                 lineCap: 'round',
               }
             }, {  // one more class
-              classMinValue: 128059,
-              classMaxValue: 286924,
+              classMinValue: 6.6725,
+              classMaxValue: 11.6125,
               symbol: {
                 strokeStyle: colours[2],
                 lineWidth: 3,
                 lineCap: 'round',
               }
             }, {  // more classes if needed
-              classMinValue: 286924,
-              classMaxValue: 569350,
+              classMinValue: 11.6125,
+              classMaxValue: 20.49,
               symbol: {
                 strokeStyle: colours[3],
                 lineWidth: 3,
                 lineCap: 'round',
               }
             }, {  // more classes if needed
-              classMinValue: 569350,
-              classMaxValue: 5513421,
+              classMinValue: 20.49,
+              classMaxValue: 48,
               symbol: {
                 strokeStyle: colours[4],
                 lineWidth: 3,
@@ -138,13 +138,13 @@
       return {
         originUniqueIdField: 'orig',  //origin ID
             originGeometry: { //origin coordinates
-              x: 'Centroids_',
-              y: 'Centroid_1'
+              x: 'orig_lon',
+              y: 'orig_lat'
             },
             destinationUniqueIdField: 'dest', //destination ID
             destinationGeometry: { //destination coordinates
-              x: 'US_lon',
-              y: 'US_lat'
+              x: 'dest_lon',
+              y: 'dest_lat'
             }
       }}
     
@@ -154,28 +154,28 @@
        var decade_1 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
           originAndDestinationFieldIds: flow_details(),
           pathDisplayMode: 'all',
-          canvasBezierStyle: flow_style('1973-1979')
+          canvasBezierStyle: flow_style('1973_1979')
         })
     
         //Define year 2000
         var decade_2 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
           originAndDestinationFieldIds: flow_details(),
           pathDisplayMode: 'all',
-          canvasBezierStyle: flow_style('1980-1989')
+          canvasBezierStyle: flow_style('1980_1989')
         })
     
         // Define year 2005
         var decade_3 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
           originAndDestinationFieldIds: flow_details(),
           pathDisplayMode: 'all',
-          canvasBezierStyle: flow_style('1990-1999')
+          canvasBezierStyle: flow_style('1990_1999')
         })
     
         // Define year 2010
         var decade_4 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
           originAndDestinationFieldIds: flow_details(),
           pathDisplayMode: 'all',
-          canvasBezierStyle: flow_style('2000-2010')
+          canvasBezierStyle: flow_style('2000_2010')
         })
     
         // Initialize Map 
@@ -190,10 +190,10 @@
     
         // Set up var baselayers because this is what L.control.layers needs
         var baseLayers = {
-          "1973-1979": decade_1,
-          "1980-1989": decade_2,
-          "1990-1999": decade_3,
-          "2000-2010": decade_4,
+          "1973_1979": decade_1,
+          "1980_1989": decade_2,
+          "1990_1999": decade_3,
+          "2000_2010": decade_4,
         };
     
         // Set bounds
@@ -216,12 +216,12 @@
 
         L.control.layers(baseLayers).addTo(map);
     
-              // Set colours for the legend 
+        // Set colours for the legend 
         function getColor(value) {
-          return value > 569000 ? colours[4] :
-            value > 286000 ? colours[3] :
-              value > 128000 ? colours[2] :
-                value > 44200 ? colours[1] :
+          return value > 20 ? colours[4] :
+            value > 11 ? colours[3] :
+              value > 6 ? colours[2] :
+                value > 2 ? colours[1] :
                   colours[0];
         }
     
@@ -232,9 +232,9 @@
         legend.onAdd = function (map) {
     
           var div = L.DomUtil.create('div', 'legend'),
-            grades = [0, 44200, 128000, 286000, 569000]; // The break values to define the intervals of population, note we begin from 0 here
+            grades = [0, 2, 6, 11, 20]; // The break values to define the intervals of population, note we begin from 0 here
     
-          div.innerHTML = '<b>Number of Migrants into the United <br> States Each Decade<br></b>'; // The legend title (HTML-based), in this case it's Population Density 2011
+          div.innerHTML = '<b>Percentage of Population that Migrate <br> to the United States Each Decade<br></b>'; // The legend title (HTML-based), in this case it's Population Density 2011
     
           // Loop through our the classes and generate a label with a color box for each interval.
           // If you are creating a choropleth map, you DO NOT need to change lines below.
@@ -273,7 +273,7 @@
               return L.circleMarker(latlng, geojsonMarkerOptions);
             },
             onEachFeature: function (feature, layer) {
-              content = "<b>Country: </b>" + feature.properties.orig + "<br><b>Number of Migrants:</b> " + feature.properties[year]
+              content = "<b>Country: </b>" + feature.properties.orig + "<br><b>Percentages:</b> " + feature.properties[year] + " %"
               layer.bindPopup(content);
             }
           }).addTo(map);
