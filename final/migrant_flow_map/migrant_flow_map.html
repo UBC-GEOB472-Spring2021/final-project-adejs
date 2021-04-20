@@ -78,7 +78,7 @@
     
         var colours = ['#f3cbd3', '#eaa9bd', '#ca699d', '#91357d', '#6c2167']
     
-    // Define function that has all of the styling and class break data. It is the same for each year. 
+    // Define function that has all of the styling and class break data. It is the same for each decade. 
     function flow_style(year) {
       return {
          //This example demonstrates the use of graduated symbols (class breaks) for the flowlines
@@ -132,7 +132,7 @@
           }
     
     }
-    // Define function that sets the flow details for each year
+    // Define function that sets the flow details for each decade
     // The details are always the same
     function flow_details() {
       return {
@@ -148,30 +148,30 @@
             }
       }}
     
-      // DEFINE THE YEARS! //
+      // DEFINE THE DECADES! //
     
-       // Define year 1995
+       // Define decade 1973-1979
        var decade_1 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
           originAndDestinationFieldIds: flow_details(),
           pathDisplayMode: 'all',
           canvasBezierStyle: flow_style('1973_1979')
         })
     
-        //Define year 2000
+        //Define decade 1980-1989
         var decade_2 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
           originAndDestinationFieldIds: flow_details(),
           pathDisplayMode: 'all',
           canvasBezierStyle: flow_style('1980_1989')
         })
     
-        // Define year 2005
+        // Define decade 1990-1999
         var decade_3 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
           originAndDestinationFieldIds: flow_details(),
           pathDisplayMode: 'all',
           canvasBezierStyle: flow_style('1990_1999')
         })
     
-        // Define year 2010
+        // Define decade 2000-2010
         var decade_4 = L.canvasFlowmapLayer(data, { //data is the variable name I used for defining the LA_US.js
           originAndDestinationFieldIds: flow_details(),
           pathDisplayMode: 'all',
@@ -183,12 +183,14 @@
           center: [18.16, -96.96],
           zoom: 4.2,
           layers: []
-          // Start with no layers because in order to get the pop-ups to change depending on the year, had to use 'on(baselayerchange)'
+          // Start with no layers because in order to get the pop-ups to change depending on the decade, had to use 'on(baselayerchange)'
           // This means that the pop-ups will only show up when the baselayer changes. So, I decided to have the map initialized as empty
-          // and then will include pop-ups at every year. 
+          // and then will include pop-ups at every decade. 
         });
     
         // Set up var baselayers because this is what L.control.layers needs
+        // In a perfect world these titles would be nicer looking but in order to have the onbaselayerchange save the name of the file, it had to 
+        // match the name of the geojson column
         var baseLayers = {
           "1973_1979": decade_1,
           "1980_1989": decade_2,
