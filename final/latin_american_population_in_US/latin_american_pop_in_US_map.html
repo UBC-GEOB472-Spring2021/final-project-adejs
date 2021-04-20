@@ -11,8 +11,8 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
-    
-    <!-- Load Javascript file with data --> 
+
+    <!-- Load Javascript file with data -->
     <script type="text/javascript" src="density_percentage.js"></script>
     <!-- Load c3.css -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.css" rel="stylesheet">
@@ -22,7 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
     <style type="text/css">
         /* Style of the Legend: adjust the values below to change the appearance of the legend pane*/
-           .legend {
+        .legend {
             padding: 6px 8px;
             line-height: 18px;
             background: rgba(255, 255, 255, 0.9);
@@ -45,55 +45,98 @@
             background: rgba(255, 255, 255, 0.9);
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             border-radius: 5px;
-            width: 200px;
+            width: 190px;
             float: left;
-            margin-left: 70px;
-            margin-top: 70px;
+            margin-left: 5%;
+            margin-top: 30%;
             opacity: 1.0;
             font-family: Arial, Helvetica, sans-serif;
-            z-index:5;
-            position: fixed;
-            height: 250px;
+            z-index: 5;
+            position: relative;
+            height: 225px;
         }
 
         body {
             padding: 0;
             margin: 0;
         }
-        html, body, #map {
+
+        #map {
             height: 100%;
             width: 100%;
             z-index: -5;
             position: fixed
         }
-        body > svg {
-    position: absolute;
-    z-index: -10;
-    top: 0;
-}
+
+        body>svg {
+            position: absolute;
+            z-index: -10;
+            top: 0;
+        }
+
+        .title {
+            padding: 1px 2px;
+            height: 6x;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+
+
+            text-align: center;
+        }
+
+        .title i {
+            width: 6px;
+            height: 10px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+
+        .title2 {
+            padding: 1px 2px;
+            height: 6x;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            text-align: center;
+
+        }
+
+        .title2 i {
+            width: 15px;
+            height: 6px;
+            float: left;
+            margin-left: 8px;
+            opacity: 0.7;
+            text-align: center;
+        }
     </style>
 
 </head>
 
 <body>
+
     <div id="chart">
     </div>
+
+
     <div id="map"></div>
 
     <script type="text/javascript">
         // Used this tutorial https://neiugis.github.io/lab5/ to make the map 
-        
+
         // initialize map
         var map = L.map('map', {
             center: [45, -100],
             zoom: 4
         });
-        
+
         // Set bounds
         var southWest = L.latLng(71.712, -171.227),
-                northEast = L.latLng(15, -40.125),
-                mybounds = L.latLngBounds(southWest, northEast);
-        
+            northEast = L.latLng(15, -40.125),
+            mybounds = L.latLngBounds(southWest, northEast);
+
         // Use outdoor mapbox style to match storymap
         L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWxpc29uZGVlcmUiLCJhIjoiY2s1ZzRiZ3JsMDQycDNrcW1nMHcxODhkayJ9.HO_b7LH4WrchBsGVMuroIg', {
             attribution: 'Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL.',
@@ -101,7 +144,7 @@
             minZoom: 4,
             bounds: mybounds,
         }).addTo(map);
-        
+
         // Define what colours will define the choropleth map
         function getColor(value) {
             return value > 13.00 ? '#a50f15' :
@@ -110,10 +153,10 @@
                         value > 2.00 ? '#fcae91' :
                             '#fee5d9';
         }
-    // Set limits on dragging, do not let user drag outside of bounds 
-    map.on('drag', function() {
-    map.panInsideBounds(mybounds, { animate: false });
-});
+        // Set limits on dragging, do not let user drag outside of bounds 
+        map.on('drag', function () {
+            map.panInsideBounds(mybounds, { animate: false });
+        });
         // Set up choropleth
         function style(feature) {
             return {
@@ -131,7 +174,7 @@
             c3.generate({
                 bindto: '#chart',  // id of the chart div, as defined earlier
                 size: {  // size (height and width) of the chart, by pixels
-                    height: 250,
+                    height: 225,
                     width: 175
                 },
 
@@ -172,6 +215,8 @@
                 }
             });
         }
+
+
         // set up highlighting feature
         function highlightFeature(e) {
             var layer = e.target;
@@ -198,39 +243,40 @@
 
         }
 
-        
-    // Change style of state if it is clicked, reset if it is not
+
+        // Change style of state if it is clicked, reset if it is not
         var prevLayerClicked = null;
 
         function onEachFeature(feature, layer) {
             layer.on({
-                click: function(e){
+                click: function (e) {
                     // If you have a layer inside  this variable
-                        if (prevLayerClicked !== null) {
+                    if (prevLayerClicked !== null) {
                         // Reset style
-                        prevLayerClicked.setStyle({ weight: 2,
-                                                    opacity: 0.1,
-                                                    color: 'black',
-                                                    fillOpacity: 1,
-                                                    dashArray: 0,
-                                                                })
-                                                        }
-                       // If there is no layer clicked, highlight feature (as defined above)
-                       // This includes the chart popping up for each state
-                        highlightFeature(e);
-        
+                        prevLayerClicked.setStyle({
+                            weight: 2,
+                            opacity: 0.1,
+                            color: 'black',
+                            fillOpacity: 1,
+                            dashArray: 0,
+                        })
+                    }
+                    // If there is no layer clicked, highlight feature (as defined above)
+                    // This includes the chart popping up for each state
+                    highlightFeature(e);
+
 
                     // Store clicked layer into this variable
                     prevLayerClicked = layer;
-                                                        }
-                                          });
-                                                 }
-        
+                }
+            });
+        }
+
         geojson = L.geoJson(data, {
             style: style,
             onEachFeature: onEachFeature
         }).addTo(map);
-        
+
         // Add legend
         var legend = L.control({ position: 'bottomright' }); // Try the other three corners if you like.
 
@@ -253,6 +299,26 @@
         };
 
         legend.addTo(map);
+        
+        // Add title
+        var title = L.control({ position: 'topright' }); // position of the title
+
+        title.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'title'); // create a div with a class "title"
+            this._div.innerHTML = "<h4>Click on a state to see the proportion of migrants from each <br> Latin American region</h4>";  // Title text, may use html to customize
+            return this._div;
+        };
+        title.addTo(map);
+
+        // Add further instructions 
+        var title2 = L.control({ position: 'bottomleft' }); // position of the title
+
+        title2.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'title2'); // create a div with a class "title"
+            this._div.innerHTML = "<h4>Hover over the pie chart to see the percentage of migrants from <br> each region</h4>";  // Title text, may use html to customize
+            return this._div;
+        };
+        title2.addTo(map);
 
     </script>
 </body>
